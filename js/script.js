@@ -17,13 +17,21 @@ function init () {
     happyBday();
 }
 
-function loadImage (imgName) {
+function loadImage (imgName, postionX, postionY, cb) {
     var img = new Image();
 
     img.src = "./images/" + imgName + ".png";
 
     img.onload = function () {
-        stage.drawImage(img, (width / 2 - img.width / 2), (height / 2 - img.height / 2));
+
+        var x = (postionX) ? postionX : width/2 - img.width/2;
+        var y = (postionY) ? postionY : height/2 - img.height/2;
+
+        stage.drawImage(img, x, y);
+    }
+
+    if (cb) {
+        cb(img);
     }
 }
 
@@ -34,25 +42,32 @@ function happyBday () {
 }
 
 function instructions () {
-    writeText("tap to play", "35px", 3, 80, height-100)
+    writeText("tap to play", "35px", 3, 80, height-100, listenForGame)
 }
 
 function listenForGame () {
-    canvas.addEventListener("click", startGame, false);
+    // remove event listeners after
+    canvas.addEventListener("click", loadGame, false);
+    canvas.addEventListener("touchstart", loadGame, false);
 }
 
-function startGame () {
+function loadGame () {
     // Clear canvas
     stage.clearRect(0, 0, canvas.width, canvas.height);
 
-    loadImage("matt-stokes-side")
+    // remove events
+    canvas.removeEventListener("click", loadGame);
+    canvas.removeEventListener("touch", loadGame);
+
+    loadImage("matt-stokes-side", 20, height-340);
+    loadImage("ground", 0, height-200);
 }
 
 function writeText (text, fontSize, lineWidth, startPostionX, startPostionY, cb) {
 
     var dashLen = 220;
     var dashOffset = dashLen;
-    var speed = 11; // change to 7
+    var speed = 20; // change to 7
     
     stage.lineWidth = lineWidth;
     stage.font = fontSize + " Comic Sans MS, cursive, TSCu_Comic, sans-serif";

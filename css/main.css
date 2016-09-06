@@ -7,4 +7,5 @@ html, body, .game-container {
 
 canvas {
 	margin: 0 auto;
+	background-color: #d6d6e0;
 }
