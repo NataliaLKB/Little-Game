@@ -27,40 +27,43 @@ function loadImage (imgName, postionX, postionY, cb) {
         var x = (postionX) ? postionX : width/2 - img.width/2;
         var y = (postionY) ? postionY : height/2 - img.height/2;
 
-        stage.drawImage(img, x, y);
-    }
+        stage.clearRect(x, y, img.width, img.height);
 
-    if (cb) {
-        cb(img);
+        stage.drawImage(img, x, y);
+
+
+        if (cb) {
+            cb(img);
+        }
     }
 }
 
 function happyBday () {
-    writeText("Happy", "50px", 5, 100, 90, 
-        writeText.bind( null, "Birthday!", "50px", 5, 50, 150, instructions)
+    writeText("Happy", "50px", 5, 110, 90, 
+        writeText.bind( null, "Birthday", "50px", 5, 80, 150, writeName)
     );
 }
 
-function instructions () {
-    writeText("tap to play", "35px", 3, 80, height-100, listenForGame)
+function writeName () {
+    writeText("Matt!", "85px", 3, 95, height-100, characterWave.bind(null, 0));
 }
 
-function listenForGame () {
-    // remove event listeners after
-    canvas.addEventListener("click", loadGame, false);
-    canvas.addEventListener("touchstart", loadGame, false);
-}
+function characterWave (count) {
 
-function loadGame () {
-    // Clear canvas
-    stage.clearRect(0, 0, canvas.width, canvas.height);
+    console.log(count);
 
-    // remove events
-    canvas.removeEventListener("click", loadGame);
-    canvas.removeEventListener("touch", loadGame);
+    if (count < 20) {
+        setTimeout(function () {
 
-    loadImage("matt-stokes-side", 20, height-340);
-    loadImage("ground", 0, height-200);
+            if (count % 2 === 1) {
+
+                loadImage("wave2", null, null, characterWave.bind(null, count+1));
+            } else {
+
+                loadImage("wave1", null, null, characterWave.bind(null, count+1));
+            }
+        }, 200);
+    }
 }
 
 function writeText (text, fontSize, lineWidth, startPostionX, startPostionY, cb) {
