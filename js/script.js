@@ -28,10 +28,10 @@ function loadImage (imgName, postionX, postionY, cb) {
         var y = (postionY) ? postionY : height/2 - img.height/2;
 
         stage.drawImage(img, x, y);
-    }
 
-    if (cb) {
-        cb(img);
+        if (cb) {
+            cb(imgName, x, y);
+        }
     }
 }
 
@@ -61,7 +61,44 @@ function loadGame () {
 
     loadImage("matt-stokes-side", 20, height-340);
     loadImage("ground", 0, height-200);
+
+    walk(20, 0);
 }
+
+function walk (startPostionX, count) {
+    var walkingSpeed = 2.5;
+    var newPosition = (startPostionX < Number(width)) ? (startPostionX + walkingSpeed) : (startPostionX - walkingSpeed); 
+    var imageName;
+
+    if (count % 2 === 1) {
+        imageName = "matt-stokes-side-frontup";
+    } else {
+        imageName = "matt-stokes-side-backup";
+    } 
+
+
+    stage.clearRect(0, 0, canvas.width, canvas.height);
+
+    loadImage("ground", 0, height-200);
+    loadImage(imageName, newPosition, height-340)
+    
+    console.log(newPosition, width);
+    setTimeout(function () {
+        requestAnimationFrame(function() {
+            walk(newPosition, count+1)
+        });
+
+    }, 200);
+}
+
+/* TODO:
+- Need a walking pixel person picture
+- Character should be "walking all the time", but can't walk past the canvas
+- "jump" button which jumps the charactor
+- assets should be loaded randomly so charactor can jump to the stop
+- Top should be a star or coin
+- Once reached game ends and you have a similar end page as the start page
+*/
 
 function writeText (text, fontSize, lineWidth, startPostionX, startPostionY, cb) {
 
