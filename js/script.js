@@ -27,7 +27,7 @@ function loadImage (imgName, postionX, postionY, cb) {
         var x = (postionX) ? postionX : width/2 - img.width/2;
         var y = (postionY) ? postionY : height/2 - img.height/2;
 
-        stage.clearRect(x, y, img.width, img.height);
+        stage.clearRect(x-25, y, img.width + 50, img.height);
 
         stage.drawImage(img, x, y);
 
