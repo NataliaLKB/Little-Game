@@ -17,15 +17,15 @@ function init () {
     happyBday();
 }
 
-function loadImage (imgName, postionX, postionY, cb) {
+function loadImage (imgName, cb) {
     var img = new Image();
 
     img.src = "./images/" + imgName + ".png";
 
     img.onload = function () {
 
-        var x = (postionX) ? postionX : width/2 - img.width/2;
-        var y = (postionY) ? postionY : height/2 - img.height/2;
+        var x = width/2 - img.width/2;
+        var y = height/2 - img.height/2;
 
         stage.clearRect(x-25, y, img.width + 50, img.height);
 
@@ -50,17 +50,15 @@ function writeName () {
 
 function characterWave (count) {
 
-    console.log(count);
-
     if (count < 20) {
         setTimeout(function () {
 
             if (count % 2 === 1) {
 
-                loadImage("wave2", null, null, characterWave.bind(null, count+1));
+                loadImage("wave2", characterWave.bind(null, count+1));
             } else {
 
-                loadImage("wave1", null, null, characterWave.bind(null, count+1));
+                loadImage("wave1", characterWave.bind(null, count+1));
             }
         }, 200);
     }
